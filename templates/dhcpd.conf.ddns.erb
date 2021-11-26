@@ -14,8 +14,8 @@ use-host-decl-names on;
 # Key from bind
 include "<%= @dnsupdatekey %>";
 <% @dnsdomain_real.each do | combined | -%>
-OUTPUT: <%= combined.map{ |k,v| { k.to_sym => v } } %>
-zone <%= forward.keys[0] %>. {
+OUTPUT: <%= combined.map{ |key, value| { key.to_sym => value } } %>
+zone <%= key.keys[0] %>. {
 <% if @nameservers && !@nameservers.empty? -%>
   primary <%= @nameservers.first %>;
 <% end -%>
