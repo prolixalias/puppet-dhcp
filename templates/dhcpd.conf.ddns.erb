@@ -14,15 +14,14 @@ use-host-decl-names on;
 # Key from bind
 include "<%= @dnsupdatekey %>";
 <% @dnsdomain_real.each do | combined | -%>
-OUTPUT: <%= combined.map{ |key, value| { key.to_sym => value } %>
-zone <%= key.keys[0] %>. {
+zone <%= combined.keys[0] %>. {
 <% if @nameservers && !@nameservers.empty? -%>
   primary <%= @nameservers.first %>;
 <% end -%>
 <% if @nameservers_ipv6 && !@nameservers_ipv6.empty? -%>
   primary6 <%= @nameservers_ipv6.first %>;
 <% end -%>
-  ddns-domainname "<%= forward.keys[0] %>.";
+  ddns-domainname "<%= combined.keys[0] %>.";
 <% unless reverse -%>
   ddns-rev-domainname "<%= reverse %>";
 <% } %>
