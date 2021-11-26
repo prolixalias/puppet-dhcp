@@ -13,7 +13,13 @@ use-host-decl-names on;
 
 # Key from bind
 include "<%= @dnsupdatekey %>";
-<% @dnsdomain_real.each do | combined | -%>
+<% @dnsdomain_real.each do | combined | 
+  combined.keys['reverse'].select do |key, value| -%>
+    key "<%= key %>.";
+    value "<%= value %>.";
+<%
+  end
+-%>
 zone <%= combined.keys[0] %>. {
 <% if @nameservers && !@nameservers.empty? -%>
   primary <%= @nameservers.first %>;
