@@ -1,7 +1,7 @@
 # == Class: dhcp
 #
 class dhcp (
-  Optional[Array[String[1]]] $dnsdomain                            = undef,
+  Optional[Variant[Array[String[1]], Array[Hash]]] $dnsdomain      = undef,
   Array[Stdlib::IP::Address::V4] $nameservers                      = [],
   Array[Stdlib::IP::Address::V6] $nameservers_ipv6                 = [],
   Array[Variant[Stdlib::Fqdn,Stdlib::IP::Address]] $ntpservers     = [],

@@ -13,17 +13,17 @@ use-host-decl-names on;
 
 # Key from bind
 include "<%= @dnsupdatekey %>";
-<% @dnsdomain_real.each do |dom, hash| -%>
-zone <%= dom %>. {
+<% @dnsdomain_real.each do | forward, reverse | -%>
+zone <%= forward.keys[0] %>. {
 <% if @nameservers && !@nameservers.empty? -%>
   primary <%= @nameservers.first %>;
-<% end -%
+<% end -%>
 <% if @nameservers_ipv6 && !@nameservers_ipv6.empty? -%>
   primary6 <%= @nameservers_ipv6.first %>;
 <% end -%>
-  ddns-domainname "<%= dom %>";
-  <% if hash['reverse'] -%>
-  ddns-rev-domainname "<%= hash['reverse'].to_s  %>";
+  ddns-domainname "<%= forward.keys[0] %>.";
+<% unless reverse[0][:reverse].empty -%>
+  ddns-rev-domainname "<%= reverse[0]['reverse'] %>";
 <% end -%>
   key <%= @_dnskeyname %>;
 }
