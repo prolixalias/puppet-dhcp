@@ -22,7 +22,7 @@ zone <%= combined.keys[0] %>. {
   primary6 <%= @nameservers_ipv6.first %>;
 <% end -%>
   ddns-domainname "<%= combined.keys[0] %>.";
-<% unless reverse -%>
+<% if true -%>
   ddns-rev-domainname "<%= combined.keys[1] %>";
 <% end -%>
   key <%= @_dnskeyname %>;
