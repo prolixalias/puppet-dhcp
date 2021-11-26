@@ -23,7 +23,7 @@ zone <%= forward.keys[0] %>. {
 <% end -%>
   ddns-domainname "<%= forward.keys[0] %>.";
 <% unless reverse -%>
-  ddns-rev-domainname "<%= reverse.keys[0] %>";
+  ddns-rev-domainname "<%= reverse %>";
 <% end -%>
   key <%= @_dnskeyname %>;
 }
