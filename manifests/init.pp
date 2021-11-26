@@ -20,6 +20,8 @@ class dhcp (
   String[1] $ddns_update_static                                    = 'on',
   String[1] $ddns_update_optimize                                  = 'on',
   Enum['allow', 'deny'] $ddns_client_updates                       = 'allow',
+  Optional[String] $ddns_domainname                                = undef,
+  Optional[String] $ddns_rev_domainname                            = undef,
   Optional[Stdlib::Host] $pxeserver                                = undef,
   Optional[String[1]] $pxefilename                                 = undef,
   Optional[Integer[1]] $mtu                                        = undef,

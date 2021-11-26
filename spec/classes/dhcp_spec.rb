@@ -212,7 +212,10 @@ describe 'dhcp', type: :class do
 
     context 'ddns' do
       let :params do
-        default_params.merge(interface: 'eth0')
+        default_params.merge(
+          interface: ['eth0'],
+          ddns_domainname: => 'sampledomain.com',
+          ddns_rev_domainname: => '1.1.1.in-addr.arpa',
       end
 
       it do
@@ -243,13 +246,14 @@ describe 'dhcp', type: :class do
             "zone #{params['dnsdomain'].first}. {",
             "  primary #{params['nameservers'].first};",
             "  primary6 #{params['nameservers_ipv6'].first};",
+            "  ddns-domainname #{params['ddns_domainname'];","
+            "  ddns-rev-domainname #{params['ddns_rev_domainname'];,
             '  key rndc.key;',
             '}',
             "zone #{params['dnsdomain'].last}. {",
             "  primary #{params['nameservers'].first};",
             "  primary6 #{params['nameservers_ipv6'].first};",
             '  key rndc.key;',
-            '}'
           ]
           expect(content.split("\n").reject { |l| l =~ %r{^#|^$} }).to match_array(expected_lines)
         end

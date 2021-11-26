@@ -1,4 +1,5 @@
 # BEGIN ddns (Dynamic DNS Updates)
+
 <% if @dnsupdatekey -%>
 # ----------
 # Dynamic DNS Updates
@@ -12,13 +13,17 @@ use-host-decl-names on;
 
 # Key from bind
 include "<%= @dnsupdatekey %>";
-<% @dnsdomain_real.each do |dom| -%>
+<% @dnsdomain_real.each do |dom, hash| -%>
 zone <%= dom %>. {
 <% if @nameservers && !@nameservers.empty? -%>
   primary <%= @nameservers.first %>;
-<% end -%>
+<% end -%
 <% if @nameservers_ipv6 && !@nameservers_ipv6.empty? -%>
   primary6 <%= @nameservers_ipv6.first %>;
+<% end -%>
+  ddns-domainname "<%= dom %>";
+  <% if hash['reverse'] -%>
+  ddns-rev-domainname "<%= hash['reverse'].to_s  %>";
 <% end -%>
   key <%= @_dnskeyname %>;
 }
@@ -26,4 +31,5 @@ zone <%= dom %>. {
 <% else -%>
 ddns-update-style none;
 <% end -%>
+
 # END ddns (Dynamic DNS Updates)
