@@ -14,9 +14,9 @@ use-host-decl-names on;
 # Key from bind
 include "<%= @dnsupdatekey %>";
 <% @dnsdomain_real.each do | combined | 
-  combined.keys['reverse'].select do |key, value| -%>
-    key "<%= key %>.";
-    value "<%= value %>.";
+  combined.keys['reverse'].map do |key, value| -%>
+    key "<%= key %>";
+    value "<%= value %>";
 <%
   end
 -%>
