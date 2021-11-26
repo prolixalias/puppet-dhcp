@@ -14,7 +14,7 @@ use-host-decl-names on;
 # Key from bind
 include "<%= @dnsupdatekey %>";
 <% @dnsdomain_real.each do | combined | 
-  combined.keys[0].map do |key, value| -%>
+  combined.keys[1].map do |key, value| -%>
     key "<%= key %>";
     value "<%= value %>";
 <%
