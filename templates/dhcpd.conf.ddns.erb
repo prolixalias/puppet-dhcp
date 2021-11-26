@@ -24,7 +24,6 @@ zone <%= combined.keys[0] %>. {
   ddns-domainname "<%= combined.keys[0] %>.";
 <% unless reverse -%>
   ddns-rev-domainname "<%= reverse %>";
-<% } %>
 <% end -%>
   key <%= @_dnskeyname %>;
 }
