@@ -136,15 +136,15 @@ class dhcp (
   $dhcp_conf_ddns_real = $dhcp_conf_ddns ? {
     'INTERNAL_TEMPLATE' => epp('dhcp/dhcpd.conf.ddns.epp',
       {
-        dnsdomain_real => $dnsdomain_real,
-        ddns_update_style => $ddns_update_style,
-        ddns_update_static => $ddns_update_static,
+        dnsdomain_real       => $dnsdomain_real,
+        ddns_update_style    => $ddns_update_style,
+        ddns_update_static   => $ddns_update_static,
         ddns_update_optimize => $ddns_update_optimize,
-        ddns_client_updates => $ddns_client_updates,
-        dnskeyname => $_dnskeyname,
-        nameservers => $nameservers,
-        nameservers_ipv6 => $nameservers_ipv6,
-        dnsupdatekey => $dnsupdatekey,
+        ddns_client_updates  => $ddns_client_updates,
+        dnskeyname           => $_dnskeyname,
+        nameservers          => $nameservers,
+        nameservers_ipv6     => $nameservers_ipv6,
+        dnsupdatekey         => $dnsupdatekey,
       }
     ),
     default             => $dhcp_conf_ddns,
