@@ -1,0 +1,48 @@
+<%- |
+  Array $dnsdomain_real,
+  String $ddns_update_style,
+  Boolean $ddns_update_static,
+  String $ddns_update_optimize,
+  String $ddns_client_updates,
+  String $dnskeyname,
+  Optional[Array] $nameservers = [],
+  Optional[Array] $nameservers_ipv6 = [],
+  Optional[Stdlib::Absolutepath] $dnsupdatekey = undef,
+| -%>
+
+# BEGIN ddns (Dynamic DNS Updates)
+
+<% if $dnsupdatekey { -%>
+# ----------
+# Dynamic DNS Updates
+# ----------
+ddns-updates on;
+ddns-update-style <%= $ddns_update_style %>;
+update-static-leases <%= $ddns_update_static %>;
+update-optimization <%= $ddns_update_optimize %>;
+use-host-decl-names on;
+<%= $ddns_client_updates %> client-updates;
+
+# Key from bind
+<%= 'include ' %> "<%= $dnsupdatekey %>";
+<% $dnsdomain_real.each | Integer $index, Hash $combined | { -%>
+
+zone <%= $combined %>. {
+<% if $nameservers.length > 0 { -%>
+  primary <%= $nameservers[0] %>;
+<% } -%>
+<% if $nameservers_ipv6.length > 0 { -%>
+  primary6 <%= $nameservers_ipv6[0] %>;
+<% } -%>
+  ddns-domainname "<%= $combined %>.";
+<% if $combined['reverse'] { -%>
+  ddns-rev-domainname "<%= $combined['reverse'] %>";
+<% } -%>
+  key <%= $dnskeyname %>;
+}
+<% } -%>
+<% } else { -%>
+ddns-update-style none;
+<% } -%>
+
+# END ddns (Dynamic DNS Updates)
