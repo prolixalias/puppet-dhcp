@@ -1,7 +1,7 @@
 <%- |
   Array $dnsdomain_real,
   String $ddns_update_style,
-  Boolean $ddns_update_static,
+  String $ddns_update_static,
   String $ddns_update_optimize,
   String $ddns_client_updates,
   String $dnskeyname,
