@@ -27,7 +27,7 @@ use-host-decl-names on;
 <%= 'include ' %> "<%= $dnsupdatekey %>";
 <% $dnsdomain_real.each | Integer $index, Hash $combined | { -%>
 
-zone <%= $combined.keys[0] %>. {
+zone <%= $combined.keys[0] %> {
 <% if $nameservers.length > 0 { -%>
   primary <%= $nameservers[0] %>;
 <% } -%>
