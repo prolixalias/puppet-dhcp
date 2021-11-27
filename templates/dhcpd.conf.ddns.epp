@@ -27,14 +27,14 @@ use-host-decl-names on;
 <%= 'include ' %> "<%= $dnsupdatekey %>";
 <% $dnsdomain_real.each | Integer $index, Hash $combined | { -%>
 
-zone <%= $combined[0] %>. {
+zone <%= $combined.keys[0] %>. {
 <% if $nameservers.length > 0 { -%>
   primary <%= $nameservers[0] %>;
 <% } -%>
 <% if $nameservers_ipv6.length > 0 { -%>
   primary6 <%= $nameservers_ipv6[0] %>;
 <% } -%>
-  ddns-domainname "<%= $combined %>.";
+  ddns-domainname "<%= $combined.keys[0] %>.";
 <% if $combined['reverse'] { -%>
   ddns-rev-domainname "<%= $combined['reverse'] %>";
 <% } -%>
