@@ -34,7 +34,6 @@ zone <%= $domain %> {
 <% if $nameservers_ipv6.length > 0 { -%>
   primary6 <%= $nameservers_ipv6[0] %>;
 <% } -%>
-  # ddns-domainname "<%= $domain[0] %>.";
   key <%= $dnskeyname %>;
 }
 <% } -%>
