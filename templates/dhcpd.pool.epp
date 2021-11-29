@@ -1,0 +1,110 @@
+<%- |
+  String $name,
+  String $failover,
+  Stdlib::IP::Address::V4 $network,
+  Stdlib::IP::Address::V4 $mask,
+  Boolean $ignore_unknown                                = false,
+  String $ddns_rev_domainname                            = 'in-addr.arpa',
+  Optional[String] $domain_name                          = undef,
+  Optional[String] $gateway                              = undef,
+  Optional[String] $ddns_domainname                      = undef,
+  Optional[String] $pxeserver                            = undef,
+  Optional[Integer] $mtu                                 = undef,
+  Optional[Array[String[1]]] $on_commit                  = undef,
+  Optional[Array[String[1]]] $on_release                 = undef,
+  Optional[Array[String[1]]] $on_expiry                  = undef,
+  Optional[Variant[String[1],[Array]]] $options          = undef,
+  Optional[Variant[String[1],[Array]]] $parameters       = undef,
+  Optional[Variant[String[1],[Array]]] $range            = undef,
+  Optional[Variant[String[1],[Array]]] $nameservers      = undef,
+  Optional[Variant[String[1],[Array]]] $nameservers_ipv6 = undef,
+| -%>
+
+'#' BEGIN pool
+'#################################'
+'#' <%= $name %> <%= $network %> <%= $mask %>
+'#################################'
+subnet <%= $network %> netmask <%= $mask %> {
+<% if $range.length > 0 or $failover.length > 0 { -%>
+  pool
+  {
+<% if $failover.length > 0 { -%>
+    failover peer "<%= $failover %>";
+    deny dynamic bootp clients;
+<% } -%>
+<% if $ignore_unknown { -%>
+    ignore unknown-clients;
+<% } -%>
+<% if $range.is_a? Array { -%>
+<% $range.each |r| { -%>
+    range <%= r %>;
+<% } -%>
+<% elsif $range.length > 0 { -%>
+    range <%= @range %>;
+<% } -%>
+  }
+<% } -%>
+
+<% if $domain_name.length > 0 { -%>
+  option domain-name "<%= @domain_name %>";
+<% } -%>
+  option subnet-mask <%= $mask %>;
+<% if $gateway.length > 0 { -%>
+  option routers <%= @gateway %>;
+<% } -%>
+<% if $options.is_a? Array { -%>
+<%   $options.each |option| { -%>
+  option <%= option %>;
+<%   } -%>
+<% elsif @options.length > 0 { -%>
+  option <%= $options %>;
+<% } -%>
+<% if $parameters.is_a? Array { -%>
+<%   $parameters.each |parameter| { -%>
+  <%= parameter %>;
+<%   } -%>
+<% elsif @parameters.length > 0 { -%>
+  <%= $parameters %>;
+<% } -%>
+<% if $nameservers.is_a? Array { -%>
+  option domain-name-servers <%= $nameservers.join(', ') %>;
+  <% } -%>
+<% elsif $nameservers.lenght > 0 { -%>
+  option domain-name-servers <%= $nameservers %>;
+<% } -%>
+<% if $nameservers_ipv6.is_a? Array { -%>
+  option dhcp6.name-servers <%= $nameservers_ipv6.join(', ') %>;
+<% } -%>
+<% elsif $nameservers_ipv6.length > 0 { -%>
+  option dhcp6.name-servers <%= $nameservers_ipv6 %>;
+<% } -%>
+<% if $pxeserver { -%>
+  next-server <%= $pxeserver %>;
+<% } -%>
+<% if $mtu { -%>
+  option interface-mtu <%= $mtu %>;
+<% } -%>
+<% unless $on_commit.length = 0 { -%>
+  on commit \{
+<% $on_commit.each |statement| { -%>
+    <%= statement %>;
+<% } -%>
+  }
+<% } -%>
+<% if $on_release.length > 0  -%>
+  on release \{
+<% $on_release.each |statement| { -%>
+    <%= statement %>;
+<% } -%>
+  }
+<% } -%>
+<% if $on_expiry.length > 0 { -%>
+  on expiry \{
+<% $on_expiry.each |statement| { -%>
+    <%= statement %>;
+<% } -%>
+  }
+<% } -%>
+}
+
+# END pool
