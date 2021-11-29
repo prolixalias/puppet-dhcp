@@ -25,7 +25,6 @@ log-facility <%= @logfacility %>;
 # Options
 # ----------
 
-option domain-name "<%= @dnsdomain_real %>";
 <% if @nameservers && !@nameservers.empty? -%>
 option domain-name-servers <%= @nameservers.join(', ') %>;
 <% end -%>
